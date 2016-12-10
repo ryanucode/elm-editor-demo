@@ -8260,14 +8260,23 @@ var _elm_lang$html$Html_Lazy$lazy3 = _elm_lang$virtual_dom$VirtualDom$lazy3;
 var _elm_lang$html$Html_Lazy$lazy2 = _elm_lang$virtual_dom$VirtualDom$lazy2;
 var _elm_lang$html$Html_Lazy$lazy = _elm_lang$virtual_dom$VirtualDom$lazy;
 
+var _user$project$Simple$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		return {
+			ctor: '_Tuple2',
+			_0: A2(_elm_lang$core$Debug$log, 'got code', _p0._0),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
+	});
 var _user$project$Simple$initModel = '';
-var _user$project$Simple$addCodeMirror = _elm_lang$core$Native_Platform.outgoingPort(
-	'addCodeMirror',
+var _user$project$Simple$addSyntaxHighlighting = _elm_lang$core$Native_Platform.outgoingPort(
+	'addSyntaxHighlighting',
 	function (v) {
 		return null;
 	});
-var _user$project$Simple$addSyntaxHighlighting = _elm_lang$core$Native_Platform.outgoingPort(
-	'addSyntaxHighlighting',
+var _user$project$Simple$addCodeMirror = _elm_lang$core$Native_Platform.outgoingPort(
+	'addCodeMirror',
 	function (v) {
 		return null;
 	});
@@ -8283,30 +8292,7 @@ var _user$project$Simple$initCmd = _elm_lang$core$Platform_Cmd$batch(
 			_1: {ctor: '[]'}
 		}
 	});
-var _user$project$Simple$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		switch (_p0.ctor) {
-			case 'UpdateCode':
-				return {
-					ctor: '_Tuple2',
-					_0: A2(_elm_lang$core$Debug$log, 'got code', _p0._0),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			case 'AddCodeMirror':
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-			default:
-				return {
-					ctor: '_Tuple2',
-					_0: model,
-					_1: _user$project$Simple$addSyntaxHighlighting(
-						{ctor: '_Tuple0'})
-				};
-		}
-	});
 var _user$project$Simple$codeMirrorChange = _elm_lang$core$Native_Platform.incomingPort('codeMirrorChange', _elm_lang$core$Json_Decode$string);
-var _user$project$Simple$AddSyntaxHighlighting = {ctor: 'AddSyntaxHighlighting'};
-var _user$project$Simple$AddCodeMirror = {ctor: 'AddCodeMirror'};
 var _user$project$Simple$UpdateCode = function (a) {
 	return {ctor: 'UpdateCode', _0: a};
 };
@@ -8342,30 +8328,41 @@ var _user$project$Simple$view = function (model) {
 				_1: {
 					ctor: '::',
 					_0: A2(
-						_elm_lang$html$Html$pre,
+						_elm_lang$html$Html$h1,
+						{ctor: '[]'},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('highlight'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$code,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('html'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text(
-										A2(_elm_lang$core$Debug$log, 'display', model)),
-									_1: {ctor: '[]'}
-								}),
+							_0: _elm_lang$html$Html$text('Code Viewer'),
 							_1: {ctor: '[]'}
 						}),
-					_1: {ctor: '[]'}
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$pre,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('highlight'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$code,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('html'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(
+											A2(_elm_lang$core$Debug$log, 'display', model)),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
 				}
 			}
 		});
