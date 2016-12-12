@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <title>Editor Test</title>
+    <link href="css/codemirror.css" rel="stylesheet">
+
+    <script type="text/javascript" src="js/codemirror.js"></script>
+    <script type="text/javascript" src="elm/codemirror.js"></script>
+    <script>
+			// attempts to allow elm to construct a codemirror object it cam
+			// communicate with
+			function addCodeMirror(app) {
+				return () => {
+					textarea = document.getElementById("codemirror")
+					codemirror = CodeMirror.fromTextArea(textarea, {
+						name: "simple",
+						lineNumbers: true,
+						mode: "htmlmixed"
+					})
+					codemirror.on("change", (codemirror, change) => {
+						//console.log(codemirror.doc.getValue())
+						app.ports.codeMirrorChange.send(codemirror.doc.getValue())
+					})
+				}
+			}
+
+			document.addEventListener("DOMContentLoaded", (event) => {
+				app = Elm.Codemirror.fullscreen()
+
+				// CodeMirror is bound to the DOM by the elm app to make sure our elm
+				// app has had the chance to render its DOM
+				app.ports.addCodeMirror.subscribe(addCodeMirror(app))
+			})
+    </script>
+  </head>
+  <body>
+  </body>
+</html>

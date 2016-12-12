@@ -1,15 +1,24 @@
-module Highlight exposing (..)
+port module Codemirror exposing (..)
 
 import Html exposing (..)
 import Html.Lazy exposing (lazy)
 import Html.Events as Event
 import Html.Attributes as Attr exposing (class, id)
 
+-- PORTS
+
+-- called only once at program start
+port addCodeMirror : () -> Cmd msg
+-- called by code mirror when the user changes its content
+port codeMirrorChange : (String -> msg) -> Sub msg
+
 -- MAIN
 main : Program Never Model Msg
 main =program
     { init = (initModel, initCmd)
     , update = update
+    -- have attempted to use both normal Html and Html.Lazy
+    -- both produce similar results despite Lazy's reduced DOM manipulations
     , view = lazy view
     , subscriptions = subscriptions
     }
@@ -17,8 +26,9 @@ main =program
 initModel : Model
 initModel = ""
 
+-- after elm starts let other libraries bind to its DOM
 initCmd : Cmd Msg
-initCmd = Cmd.none
+initCmd = Cmd.batch [addCodeMirror ()]
 
 -- MODEL
 
@@ -34,14 +44,16 @@ update msg model =
     case msg of
         UpdateCode code ->
             (Debug.log "got code" code, Cmd.none)
+            --(Debug.log "got code" code, addSyntaxHighlighting)
 
 -- VIEW
 view : Model -> Html Msg
 view model = node "main" []
     [ h1 [] [text "Code Editor"]
-    , p [] [text "There is no interaction with codemirror or highligh.js in this example. It is just meant to give a gist of how the application should work. You can open the JS console and type in the editor to see extra debugging information."]
+    , p [] [text "Type in the code editor and open the console to see the error."]
     , textarea [id "codemirror", Event.onInput UpdateCode] []
     , h1 [] [text "Code Viewer"]
+    , p [] [text "The highlighted code does not appear below here as it should."]
     , pre [class "highlight"] 
         [code [class "html"] [text <| Debug.log "display" model]]
     ]
@@ -49,4 +61,6 @@ view model = node "main" []
 -- SUBS
 
 subscriptions : Model -> Sub Msg
-subscriptions model = Sub.none
+subscriptions model = Sub.batch
+    [ codeMirrorChange UpdateCode
+    ]

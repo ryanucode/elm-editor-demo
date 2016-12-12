@@ -2,12 +2,14 @@
   <head>
     <title>Editor Test</title>
     <link href="css/highlight.css" rel="stylesheet">
-    <link href="css/codemirror.css" rel="stylesheet">
-
     <script type="text/javascript" src="js/highlight.js"></script>
-    <script type="text/javascript" src="js/codemirror.js"></script>
+
     <script type="text/javascript" src="elm/simple.js"></script>
-    <script type="text/javascript" src="js/simple.js"></script>
+    <script>
+			document.addEventListener("DOMContentLoaded", (event) => {
+				app = Elm.Highlight.fullscreen()
+			})
+    </script>
   </head>
   <body>
   </body>

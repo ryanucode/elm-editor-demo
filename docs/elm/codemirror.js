@@ -8260,31 +8260,33 @@ var _elm_lang$html$Html_Lazy$lazy3 = _elm_lang$virtual_dom$VirtualDom$lazy3;
 var _elm_lang$html$Html_Lazy$lazy2 = _elm_lang$virtual_dom$VirtualDom$lazy2;
 var _elm_lang$html$Html_Lazy$lazy = _elm_lang$virtual_dom$VirtualDom$lazy;
 
-var _user$project$Highlight$subscriptions = function (model) {
-	return _elm_lang$core$Platform_Sub$none;
-};
-var _user$project$Highlight$initModel = '<p class=\"test\">This is a test.</p>';
-var _user$project$Highlight$addSyntaxHighlighting = _elm_lang$core$Native_Platform.outgoingPort(
-	'addSyntaxHighlighting',
-	function (v) {
-		return null;
-	});
-var _user$project$Highlight$initCmd = _user$project$Highlight$addSyntaxHighlighting(
-	{ctor: '_Tuple0'});
-var _user$project$Highlight$update = F2(
+var _user$project$Codemirror$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
 		return {
 			ctor: '_Tuple2',
 			_0: A2(_elm_lang$core$Debug$log, 'got code', _p0._0),
-			_1: _user$project$Highlight$addSyntaxHighlighting(
-				{ctor: '_Tuple0'})
+			_1: _elm_lang$core$Platform_Cmd$none
 		};
 	});
-var _user$project$Highlight$UpdateCode = function (a) {
+var _user$project$Codemirror$initModel = '';
+var _user$project$Codemirror$addCodeMirror = _elm_lang$core$Native_Platform.outgoingPort(
+	'addCodeMirror',
+	function (v) {
+		return null;
+	});
+var _user$project$Codemirror$initCmd = _elm_lang$core$Platform_Cmd$batch(
+	{
+		ctor: '::',
+		_0: _user$project$Codemirror$addCodeMirror(
+			{ctor: '_Tuple0'}),
+		_1: {ctor: '[]'}
+	});
+var _user$project$Codemirror$codeMirrorChange = _elm_lang$core$Native_Platform.incomingPort('codeMirrorChange', _elm_lang$core$Json_Decode$string);
+var _user$project$Codemirror$UpdateCode = function (a) {
 	return {ctor: 'UpdateCode', _0: a};
 };
-var _user$project$Highlight$view = function (model) {
+var _user$project$Codemirror$view = function (model) {
 	return A3(
 		_elm_lang$html$Html$node,
 		'main',
@@ -8306,7 +8308,7 @@ var _user$project$Highlight$view = function (model) {
 					{ctor: '[]'},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text('This example fails when the user attempts to type in the code editor.'),
+						_0: _elm_lang$html$Html$text('Type in the code editor and open the console to see the error.'),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
@@ -8318,15 +8320,11 @@ var _user$project$Highlight$view = function (model) {
 							_0: _elm_lang$html$Html_Attributes$id('codemirror'),
 							_1: {
 								ctor: '::',
-								_0: _elm_lang$html$Html_Events$onInput(_user$project$Highlight$UpdateCode),
+								_0: _elm_lang$html$Html_Events$onInput(_user$project$Codemirror$UpdateCode),
 								_1: {ctor: '[]'}
 							}
 						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text(_user$project$Highlight$initModel),
-							_1: {ctor: '[]'}
-						}),
+						{ctor: '[]'}),
 					_1: {
 						ctor: '::',
 						_0: A2(
@@ -8340,48 +8338,67 @@ var _user$project$Highlight$view = function (model) {
 						_1: {
 							ctor: '::',
 							_0: A2(
-								_elm_lang$html$Html$pre,
+								_elm_lang$html$Html$p,
+								{ctor: '[]'},
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('highlight'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$code,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('html'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text(
-												A2(_elm_lang$core$Debug$log, 'display', model)),
-											_1: {ctor: '[]'}
-										}),
+									_0: _elm_lang$html$Html$text('The highlighted code does not appear below here as it should.'),
 									_1: {ctor: '[]'}
 								}),
-							_1: {ctor: '[]'}
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$pre,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('highlight'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$code,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('html'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(
+													A2(_elm_lang$core$Debug$log, 'display', model)),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
 						}
 					}
 				}
 			}
 		});
 };
-var _user$project$Highlight$main = _elm_lang$html$Html$program(
+var _user$project$Codemirror$subscriptions = function (model) {
+	return _elm_lang$core$Platform_Sub$batch(
+		{
+			ctor: '::',
+			_0: _user$project$Codemirror$codeMirrorChange(_user$project$Codemirror$UpdateCode),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Codemirror$main = _elm_lang$html$Html$program(
 	{
-		init: {ctor: '_Tuple2', _0: _user$project$Highlight$initModel, _1: _user$project$Highlight$initCmd},
-		update: _user$project$Highlight$update,
-		view: _elm_lang$html$Html_Lazy$lazy(_user$project$Highlight$view),
-		subscriptions: _user$project$Highlight$subscriptions
+		init: {ctor: '_Tuple2', _0: _user$project$Codemirror$initModel, _1: _user$project$Codemirror$initCmd},
+		update: _user$project$Codemirror$update,
+		view: _elm_lang$html$Html_Lazy$lazy(_user$project$Codemirror$view),
+		subscriptions: _user$project$Codemirror$subscriptions
 	})();
 
 var Elm = {};
-Elm['Highlight'] = Elm['Highlight'] || {};
-if (typeof _user$project$Highlight$main !== 'undefined') {
-    _user$project$Highlight$main(Elm['Highlight'], 'Highlight', undefined);
+Elm['Codemirror'] = Elm['Codemirror'] || {};
+if (typeof _user$project$Codemirror$main !== 'undefined') {
+    _user$project$Codemirror$main(Elm['Codemirror'], 'Codemirror', undefined);
 }
 
 if (typeof define === "function" && define['amd'])

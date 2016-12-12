@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>Editor Test</title>
+    <link href="css/highlight.css" rel="stylesheet">
+    <script type="text/javascript" src="js/highlight.js"></script>
+
+    <script type="text/javascript" src="elm/highlight.js"></script>
+    <script>
+      // this should be called by the Elm application everytime the content of the code editor changes.
+      function addSyntaxHighlighting() {
+        let elems = Array.from(document.querySelectorAll("pre.highlight"))
+
+        for (let i = 0; i < elems.length; i++) {
+          hljs.highlightBlock(elems[i])
+        }
+      }
+			document.addEventListener("DOMContentLoaded", (event) => {
+				app = Elm.Highlight.fullscreen()
+
+				// CodeMirror is bound to the DOM by the elm app to make sure our elm
+				// app has had the chance to render its DOM
+				app.ports.addSyntaxHighlighting.subscribe(addSyntaxHighlighting)
+			})
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
